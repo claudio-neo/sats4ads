@@ -1,12 +1,15 @@
 import express from 'express';
 import Database from 'better-sqlite3';
 import crypto from 'crypto';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+const IMG_DIR = '/var/www/sats4ads/img';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 const db = new Database(`${__dirname}/sats4ads.db`);
 const SHARED_SECRET = process.env.S4A_SECRET || 'sats4ads_shared_secret_2026';
@@ -61,12 +64,25 @@ function validateInitData(initData) {
 // ── BOT sync endpoints (protected by shared secret) ───────────────────────
 app.post('/api/ads', (req, res) => {
   if (req.headers['x-secret'] !== SHARED_SECRET) return res.status(401).json({ error: 'unauthorized' });
-  const { code, title, content_type, content_text, content_caption, per_claim_msat, max_claims } = req.body;
+  const { code, title, content_type, content_text, content_caption, per_claim_msat, max_claims, image_base64 } = req.body;
   if (!code || !content_type || !per_claim_msat) return res.status(400).json({ error: 'missing fields' });
+
+  // Save image if provided
+  let imageUrl = null;
+  if (image_base64) {
+    try {
+      const buf = Buffer.from(image_base64, 'base64');
+      const ext = content_type === 'animation' ? 'gif' : 'jpg';
+      const imgPath = `${IMG_DIR}/${code}.${ext}`;
+      fs.writeFileSync(imgPath, buf);
+      imageUrl = `/img/${code}.${ext}`;
+    } catch (e) { console.error('[IMG] save failed:', e.message); }
+  }
+
   db.prepare(`INSERT OR REPLACE INTO ads
-    (code,title,content_type,content_text,content_caption,per_claim_msat,max_claims)
-    VALUES (?,?,?,?,?,?,?)`)
-    .run(code, title||code, content_type, content_text||null, content_caption||null, per_claim_msat, max_claims);
+    (code,title,content_type,content_text,content_caption,per_claim_msat,max_claims,image_url)
+    VALUES (?,?,?,?,?,?,?,?)`)
+    .run(code, title||code, content_type, content_text||null, content_caption||null, per_claim_msat, max_claims, imageUrl);
   res.json({ ok: true });
 });
 app.post('/api/ads/:code/claim', (req, res) => {
@@ -115,6 +131,8 @@ app.get('/ad/:code', (req, res) => {
   const content      = ad.content_caption || ad.content_text || '';
   const remaining    = ad.max_claims - ad.claims_made;
   const code         = req.params.code;
+  const hasImage     = ad.image_url ? true : false;
+  const imageHtml    = hasImage ? `<img src="${ad.image_url}" style="width:100%;border-radius:8px;margin-bottom:.75rem;max-height:300px;object-fit:cover" alt="">` : '';
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(`<!DOCTYPE html>
@@ -138,6 +156,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </style></head><body>
 <div class="card">
   <div class="badge">⚡ Anuncio patrocinado</div>
+  ${imageHtml}
   <div class="content">${content}</div>
   <div class="reward">⚡ ${perClaimSats} sats</div>
   <div class="counter" id="counter">${exhausted ? '✅ Completado' : `${remaining} claims disponibles`}</div>
