@@ -1,78 +1,73 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>sats4ads — Manual</title>
 <style>
-:root{--bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--border:#222;--orange:#f7931a;--text:#e0e0e0;--muted:#666;--code-bg:#0d1117}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
-.layout{display:flex;min-height:100vh}
-nav{width:248px;min-width:248px;background:var(--bg2);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
-.nav-logo{padding:0 1.25rem 1rem;border-bottom:1px solid var(--border);margin-bottom:.5rem}
-.nav-logo h1{font-size:1.2rem;background:linear-gradient(135deg,#f7931a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-logo p{font-size:.72rem;color:var(--muted);margin-top:.2rem}
-.lsw{display:flex;gap:.35rem;padding:.65rem 1.25rem;border-bottom:1px solid var(--border);margin-bottom:.5rem}
-.lb{flex:1;padding:.3rem 0;background:var(--bg3);border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:.78rem;cursor:pointer;text-align:center;transition:all .15s}
-.lb.on,.lb:hover{background:#f7931a;color:#000;border-color:#f7931a;font-weight:600}
-nav a{display:block;padding:.38rem 1.25rem;color:var(--muted);text-decoration:none;font-size:.83rem;border-left:2px solid transparent;transition:all .15s}
-nav a:hover,nav a.on{color:#f7931a;border-left-color:#f7931a;background:rgba(247,147,26,.05)}
-.ns{font-size:.63rem;text-transform:uppercase;letter-spacing:1px;color:#444;padding:.85rem 1.25rem .3rem}
-main{flex:1;padding:2.5rem 3.5rem;max-width:820px}
-h2{font-size:1.45rem;color:#fff;margin:2.25rem 0 .85rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
+
+#snav{position:fixed;top:0;left:0;right:0;z-index:200;padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.93);backdrop-filter:blur(14px);border-bottom:1px solid #1e1e1e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;gap:1rem}
+.nav-logo{font-size:1.15rem;font-weight:700;background:linear-gradient(135deg,#f7931a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;flex-shrink:0}
+.nav-links{display:flex;gap:1.5rem;align-items:center;flex-wrap:nowrap}
+.nav-links a{color:#555;text-decoration:none;font-size:.87rem;transition:color .15s;white-space:nowrap}
+.nav-links a:hover{color:#f7931a}
+.nav-links a.nav-act{color:#f7931a;font-weight:600}
+.nav-flags{display:flex;gap:0;align-items:center}
+.nf{background:none;border:none;cursor:pointer;padding:.2rem .35rem;font-size:.85rem;color:#444;transition:color .15s;line-height:1}
+.nf:hover{color:#f7931a}
+.nf.nf-act{color:#f7931a}
+.nav-bot{background:#f7931a;color:#000!important;padding:.38rem .95rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.84rem;white-space:nowrap;flex-shrink:0}
+.nav-bot:hover{opacity:.88}
+@media(max-width:600px){.nav-links a:not(.nav-bot){display:none}}
+
+
+:root{--bg:#080808;--bg2:#0f0f0f;--bg3:#161616;--bd:#222;--or:#f7931a;--tx:#d4d4d4;--mu:#666;--code:#0d1117}
+body{background:var(--bg);color:var(--tx);line-height:1.7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:5.5rem 2rem 4rem}
+h2{font-size:1.5rem;color:#fff;margin:2.5rem 0 .9rem;padding-bottom:.5rem;border-bottom:1px solid var(--bd)}
 h2:first-of-type{margin-top:0}
-h3{font-size:.97rem;color:#f7931a;margin:1.4rem 0 .45rem}
-p{margin-bottom:.85rem}
-ul,ol{margin:.35rem 0 .85rem 1.4rem}
-li{margin-bottom:.28rem}
-.intro{background:var(--bg3);border-left:3px solid #f7931a;border-radius:0 8px 8px 0;padding:.8rem 1rem;margin-bottom:1.1rem;font-size:.9rem}
+h3{font-size:1rem;color:var(--or);margin:1.5rem 0 .5rem}
+p{margin-bottom:.9rem;color:var(--tx)}
+ul,ol{margin:.4rem 0 .9rem 1.4rem}
+li{margin-bottom:.3rem}
+.intro{background:var(--bg3);border-left:3px solid var(--or);border-radius:0 8px 8px 0;padding:.875rem 1.1rem;margin-bottom:1.25rem;font-size:.92rem}
 .step{display:flex;gap:.8rem;margin-bottom:.6rem;align-items:flex-start}
-.sn{min-width:24px;height:24px;background:#f7931a;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.77rem;flex-shrink:0;margin-top:.18rem}
-pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:.8rem .95rem;font-family:'Courier New',monospace;font-size:.8rem;overflow-x:auto;margin:.6rem 0 1rem;color:#4caf50}
-code{background:var(--code-bg);border:1px solid var(--border);padding:.1rem .3rem;border-radius:4px;font-family:'Courier New',monospace;font-size:.8rem;color:#f7931a}
+.sn{min-width:24px;height:24px;background:var(--or);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.77rem;flex-shrink:0;margin-top:.18rem}
+pre{background:var(--code);border:1px solid var(--bd);border-radius:8px;padding:.875rem 1rem;font-family:'Courier New',monospace;font-size:.8rem;overflow-x:auto;margin:.6rem 0 1rem;color:#4caf50}
+code{background:var(--code);border:1px solid var(--bd);padding:.1rem .3rem;border-radius:4px;font-family:'Courier New',monospace;font-size:.8rem;color:var(--or)}
 pre code{background:none;border:none;padding:0;color:inherit}
 .badge{display:inline-flex;align-items:center;padding:.18rem .5rem;border-radius:20px;font-size:.7rem;font-weight:600;margin:.12rem}
-.bb{background:#0c1929;color:#4facff}.bg{background:#1c2e1c;color:#4caf50}.bo{background:#2e1c06;color:#f7931a}.bp{background:#1a0c29;color:#c084fc}
+.bb{background:#0c1929;color:#4facff}.bg{background:#1c2e1c;color:#4caf50}.bo{background:#2e1c06;color:var(--or)}.bp{background:#1a0c29;color:#c084fc}
 table{width:100%;border-collapse:collapse;margin:.65rem 0 1.1rem;font-size:.86rem}
-th{background:var(--bg3);color:#f7931a;padding:.5rem .8rem;text-align:left;border:1px solid var(--border)}
-td{padding:.45rem .8rem;border:1px solid var(--border)}
+th{background:var(--bg3);color:var(--or);padding:.5rem .8rem;text-align:left;border:1px solid var(--bd)}
+td{padding:.45rem .8rem;border:1px solid var(--bd)}
 .tip{background:#0f1e12;border:1px solid #2d4a2d;color:#80c880;border-radius:8px;padding:.65rem .9rem;margin:.65rem 0;font-size:.86rem}
-.info{background:#0a1525;border:1px solid #1a3a5a;color:#6090c0;border-radius:8px;padding:.65rem .9rem;margin:.65rem 0;font-size:.86rem}
-.warn{background:#1e170a;border:1px solid #4a3a0a;color:#c8a040;border-radius:8px;padding:.65rem .9rem;margin:.65rem 0;font-size:.86rem}
+.inf{background:#0a1525;border:1px solid #1a3a5a;color:#6090c0;border-radius:8px;padding:.65rem .9rem;margin:.65rem 0;font-size:.86rem}
+.wrn{background:#1e170a;border:1px solid #4a3a0a;color:#c8a040;border-radius:8px;padding:.65rem .9rem;margin:.65rem 0;font-size:.86rem}
 .bm{background:#1e3a5f;border-radius:12px 12px 12px 4px;padding:.65rem .9rem;margin:.6rem 0;max-width:340px;font-size:.86rem}
 .bm::before{content:'🤖 LightningEasyBot';display:block;font-size:.65rem;color:#4facff;margin-bottom:.3rem;font-weight:600}
 .bb2{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:.22rem .6rem;font-size:.75rem;margin:.12rem .12rem 0 0;color:#fff}
-section{scroll-margin-top:65px}
+section{scroll-margin-top:60px}
 .lc{display:none}.lc.on{display:block}
-@media(max-width:768px){nav{display:none}main{padding:1.25rem}}
+@media(max-width:600px){.wrap{padding:5rem 1rem 3rem}}
+
 </style>
-</head>
-<body>
-<nav style="position:fixed;top:0;left:0;right:0;z-index:200;padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1e1e1e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-  <a href="/" style="font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,#f7931a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;flex-shrink:0">⚡ sats4ads</a>
-  <div style="display:flex;gap:1.1rem;align-items:center;flex-wrap:wrap">
-    <a href="/" style="color:#555;text-decoration:none;font-size:.86rem" id="nl-home">Home</a>
-    <a href="/manual" style="color:#f7931a;font-weight:600;text-decoration:none;font-size:.86rem" id="nl-manual">Manual</a>
-    <a href="/preview" style="color:#555;text-decoration:none;font-size:.86rem" id="nl-preview">Preview</a>
-    <span style="display:flex;gap:.1rem;align-items:center;margin:0 .3rem">
-      <button class="lb" data-l="es" onclick="setLang('es')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.82rem;color:#444">🇪🇸</button>
-      <button class="lb" data-l="en" onclick="setLang('en')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.82rem;color:#444">🇬🇧</button>
-      <button class="lb" data-l="de" onclick="setLang('de')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.82rem;color:#444">🇩🇪</button>
+</head><body>
+<nav id="snav">
+  <a href="/" class="nav-logo">⚡ sats4ads</a>
+  <div class="nav-links">
+    <a href="/" id="nav-home" class=""><span data-lang="es">Inicio</span><span data-lang="en">Home</span><span data-lang="de">Start</span></a>
+    <a href="/manual" id="nav-manual" class="nav-act"><span data-lang="es">Manual</span><span data-lang="en">Manual</span><span data-lang="de">Handbuch</span></a>
+    <a href="/preview" id="nav-preview" class=""><span data-lang="es">Preview</span><span data-lang="en">Preview</span><span data-lang="de">Vorschau</span></a>
+    <span class="nav-flags">
+      <button class="nf" data-l="es" onclick="SL('es')">🇪🇸</button>
+      <button class="nf" data-l="en" onclick="SL('en')">🇬🇧</button>
+      <button class="nf" data-l="de" onclick="SL('de')">🇩🇪</button>
     </span>
-    <a href="https://t.me/LightningEasyBot" style="background:#f7931a;color:#000;padding:.35rem .9rem;border-radius:6px;font-weight:600;text-decoration:none;font-size:.83rem;white-space:nowrap">🤖 Bot</a>
+    <a href="https://t.me/LightningEasyBot" class="nav-bot">🤖 Bot</a>
   </div>
 </nav>
-<div class="layout" style="padding-top:52px">
-<nav>
-  <div class="nav-logo">
-    <h1>⚡ sats4ads</h1>
-    <p id="ntl">Manual de usuario v1.0</p>
-  </div>
-  <div class="lsw"><button class="lb on" data-l="es" onclick="setLang('es')">🇪🇸 ES</button><button class="lb " data-l="en" onclick="setLang('en')">🇬🇧 EN</button><button class="lb " data-l="de" onclick="setLang('de')">🇩🇪 DE</button></div>
-  <div class="lc on" data-lang="es"><div class="ns">Introducción</div><a href="#que-es">¿Qué es sats4ads?</a><a href="#comparativa">Comparativa de formatos</a><div class="ns">Ganar sats</div><a href="#receptor">📥 Ser receptor</a><div class="ns">Publicitar</div><a href="#broadcast">📢 Broadcast DM</a><a href="#groupad">🏪 Anuncio de grupo</a><a href="#canal">📣 Canal</a><a href="#web">🌐 Iframe web</a><div class="ns">Herramientas</div><a href="#preview">🔍 Previsualizador</a><a href="#cancelar">❌ Cancelar</a><a href="#comandos">📋 Comandos</a><div class="ns">Economía</div><a href="#comisiones">💰 Comisiones</a><a href="#seguridad">🔒 Anti-fraude</a></div><div class="lc " data-lang="en"><div class="ns">Introduction</div><a href="#que-es">What is sats4ads?</a><a href="#comparativa">Format comparison</a><div class="ns">Earn sats</div><a href="#receptor">📥 Become a viewer</a><div class="ns">Advertise</div><a href="#broadcast">📢 Broadcast DM</a><a href="#groupad">🏪 Group ad</a><a href="#canal">📣 Channel ad</a><a href="#web">🌐 Web iframe</a><div class="ns">Tools</div><a href="#preview">🔍 Previewer</a><a href="#cancelar">❌ Cancel ad</a><a href="#comandos">📋 Commands</a><div class="ns">Economy</div><a href="#comisiones">💰 Fees</a><a href="#seguridad">🔒 Anti-fraud</a></div><div class="lc " data-lang="de"><div class="ns">Einführung</div><a href="#que-es">Was ist sats4ads?</a><a href="#comparativa">Formatvergleich</a><div class="ns">Sats verdienen</div><a href="#receptor">📥 Empfänger werden</a><div class="ns">Werbung schalten</div><a href="#broadcast">📢 Broadcast DM</a><a href="#groupad">🏪 Gruppenanzeige</a><a href="#canal">📣 Kanalanzeige</a><a href="#web">🌐 Web-Iframe</a><div class="ns">Werkzeuge</div><a href="#preview">🔍 Vorschau</a><a href="#cancelar">❌ Abbrechen</a><a href="#comandos">📋 Befehle</a><div class="ns">Wirtschaft</div><a href="#comisiones">💰 Gebühren</a><a href="#seguridad">🔒 Betrugsschutz</a></div>
-</nav>
-<main><div class="lc on" data-lang="es">
+
+<div class="wrap">
+<div class="lc on" data-lang="es">
 <section id="que-es"><h2>¿Qué es sats4ads?</h2>
 <div class="intro">sats4ads es publicidad nativa con Bitcoin Lightning integrada en Telegram. Los anunciantes pagan en sats, los usuarios cobran en sats — sin intermediarios, sin custodia.</div>
 <ul><li><strong>Los receptores cobran por cada anuncio que ven</strong> — tú fijas el precio mínimo</li><li><strong>Los anunciantes pagan solo por impresiones reales</strong> — reembolso automático del saldo no reclamado</li><li><strong>Sin datos personales</strong> — solo tu ID de Telegram</li><li><strong>Pagos instantáneos</strong> — Lightning Network</li></ul></section>
@@ -80,25 +75,24 @@ section{scroll-margin-top:65px}
 <section id="comparativa"><h2>Comparativa de formatos</h2>
 <table><tr><th>Formato</th><th>Dónde aparece</th><th>Claims</th><th>Ideal para</th></tr>
 <tr><td><span class="badge bb">📢 Broadcast DM</span></td><td>DM de cada usuario</td><td>1 por usuario</td><td>Alcance masivo</td></tr>
-<tr><td><span class="badge bg">🏪 Grupo</span></td><td>Grupo Telegram</td><td>1 por miembro</td><td>Comunidades concretas</td></tr>
+<tr><td><span class="badge bg">🏪 Grupo</span></td><td>Grupo Telegram</td><td>1 por miembro</td><td>Comunidades</td></tr>
 <tr><td><span class="badge bo">📣 Canal</span></td><td>Canal Telegram</td><td>1 por suscriptor</td><td>Audiencias grandes</td></tr>
-<tr><td><span class="badge bp">🌐 Web</span></td><td>Cualquier web</td><td>1 por Telegram ID</td><td>Blogs, tiendas, webs</td></tr></table></section>
+<tr><td><span class="badge bp">🌐 Web</span></td><td>Cualquier web</td><td>1 por Telegram ID</td><td>Blogs, tiendas</td></tr></table></section>
 
 <section id="receptor"><h2>📥 Ser receptor — ganar sats</h2>
-<div class="intro">Como receptor, los anunciantes te pagan directamente por ver sus anuncios. Tú fijas el precio mínimo que aceptas.</div>
-<h3>Activar recepción</h3>
+<div class="intro">Como receptor, los anunciantes te pagan por ver sus anuncios. Tú fijas el precio mínimo.</div>
 <div class="step"><div class="sn">1</div><div>Abre el bot: <code>/sats4ads</code></div></div>
 <div class="step"><div class="sn">2</div><div>Pulsa <strong>✅ Activar recepción</strong> y elige tu tarifa</div></div>
 <div class="step"><div class="sn">3</div><div>Ya estás en el marketplace</div></div>
 <h3>Tarifas recomendadas</h3>
 <ul><li><code>0.1 sats/vista</code> — máxima exposición</li><li><code>1 sat/vista</code> — equilibrio popular</li><li><code>5+ sats/vista</code> — menos anuncios, mejor pagados</li></ul>
-<div class="bm">📢 <strong>Anuncio patrocinado</strong><br><br><em>[contenido del anuncio]</em><br><small>⚡ 2 sats · Válido 3 días</small><br><span class="bb2">✅ Reclamar 2 sats</span></div>
-<div class="warn">⏰ Tienes 3 días para reclamar. Pasado ese tiempo, el pago expira.</div></section>
+<div class="bm">📢 <strong>Anuncio patrocinado</strong><br><em>[contenido]</em><br><small>⚡ 2 sats · Válido 3 días</small><br><span class="bb2">✅ Reclamar 2 sats</span></div>
+<div class="wrn">⏰ Tienes 3 días para reclamar. Pasado ese tiempo, el pago expira.</div></section>
 
 <section id="broadcast"><h2>📢 Broadcast DM</h2>
 <div class="intro">Envía tu anuncio al DM de usuarios suscritos, de más barato a más caro, hasta agotar el presupuesto.</div>
 <div class="step"><div class="sn">1</div><div>Envía el contenido al bot (texto, foto, vídeo, GIF...)</div></div>
-<div class="step"><div class="sn">2</div><div>Responde a ese mensaje con <code>/sats4ads preview</code></div></div>
+<div class="step"><div class="sn">2</div><div>Responde con <code>/sats4ads preview</code></div></div>
 <div class="step"><div class="sn">3</div><div>Elige precio máximo/vista y presupuesto total</div></div>
 <pre><code>Presupuesto:     100 sats
 Comisión (10%):  -10 sats
@@ -106,43 +100,38 @@ Para viewers:     90 sats → 90 usuarios @ 1 sat/vista</code></pre>
 <div class="tip">💡 El saldo no reclamado en 3 días se reembolsa automáticamente.</div></section>
 
 <section id="groupad"><h2>🏪 Anuncio de grupo</h2>
-<div class="intro">Faucet patrocinado en un grupo: cada miembro reclama una vez. Configuras todo en privado y pegas el código en el grupo.</div>
+<div class="intro">Faucet patrocinado en un grupo: cada miembro reclama una vez.</div>
 <div class="step"><div class="sn">1</div><div><code>/groupad</code> en privado — atajo: <code>/groupad 100 10</code></div></div>
-<div class="step"><div class="sn">2</div><div>Configura presupuesto y sats/claim</div></div>
-<div class="step"><div class="sn">3</div><div>Envía el contenido y confirma</div></div>
-<div class="step"><div class="sn">4</div><div>Recibes el código <code>AD-XXXXXX</code> + URL iframe</div></div>
-<div class="step"><div class="sn">5</div><div>Pega el código en el grupo → el bot publica el anuncio automáticamente</div></div>
-<pre><code>/groupad 200 20
-# 200 sats total · 20 sats/claim · 10 claims máx · comisión 20 sats</code></pre>
+<div class="step"><div class="sn">2</div><div>Configura presupuesto y sats/claim, envía contenido</div></div>
+<div class="step"><div class="sn">3</div><div>Recibes el código <code>AD-XXXXXX</code></div></div>
+<div class="step"><div class="sn">4</div><div>Pega el código en el grupo → bot publica el anuncio automáticamente</div></div>
+<pre><code>/groupad 200 20  → 200 sats total · 20/claim · 10 claims · 20 sats comisión</code></pre>
 <div class="tip">💡 El propietario del grupo recibe el 50% de la comisión automáticamente.</div></section>
 
 <section id="canal"><h2>📣 Anuncio en canal</h2>
 <div class="intro">Igual que el anuncio de grupo, pero en un canal. El bot debe ser administrador del canal.</div>
 <div class="step"><div class="sn">1</div><div>Crea el anuncio: <code>/groupad 500 50</code></div></div>
 <div class="step"><div class="sn">2</div><div>Obtén el código <code>AD-XXXXXX</code></div></div>
-<div class="step"><div class="sn">3</div><div>Publica el código en el canal — el bot lo reemplaza por el anuncio con botón Mini App</div></div>
-<div class="info">📣 En canales, el botón abre el anuncio como Mini App dentro de Telegram, sin salir de la app.</div></section>
+<div class="step"><div class="sn">3</div><div>Publica el código en el canal — el bot lo reemplaza con botón Mini App</div></div>
+<div class="inf">📣 En canales el botón abre el anuncio como Mini App dentro de Telegram, sin salir de la app.</div></section>
 
 <section id="web"><h2>🌐 Iframe en web</h2>
 <div class="intro">Incrusta tu anuncio como widget en cualquier web. Los visitantes reclaman sats abriendo Telegram.</div>
-<h3>Snippet HTML</h3>
-<pre><code>&lt;iframe
-  src="https://sats4ads.com/ad/AD-XXXXXX"
-  width="100%" height="240"
-  frameborder="0" style="border-radius:12px"
-&gt;&lt;/iframe&gt;</code></pre>
-<div class="step"><div class="sn">1</div><div>Visitante ve el widget y pulsa <strong>Reclamar X sats</strong></div></div>
-<div class="step"><div class="sn">2</div><div>Se genera un link temporal (10 min) que abre Telegram</div></div>
-<div class="step"><div class="sn">3</div><div>El bot verifica identidad y acredita los sats al instante</div></div>
+<pre><code>&lt;iframe src="https://sats4ads.com/ad/AD-XXXXXX"
+  width="100%" height="240" frameborder="0"
+  style="border-radius:12px"&gt;&lt;/iframe&gt;</code></pre>
+<div class="step"><div class="sn">1</div><div>Visitante pulsa <strong>Reclamar X sats</strong></div></div>
+<div class="step"><div class="sn">2</div><div>Link temporal (10 min) abre Telegram</div></div>
+<div class="step"><div class="sn">3</div><div>Bot verifica identidad y acredita sats al instante</div></div>
 <div class="tip">💡 El mismo anuncio funciona en Telegram Y en la web. El presupuesto es compartido.</div></section>
 
 <section id="preview"><h2>🔍 Previsualizador</h2>
-<p>Previsualiza tu anuncio en un navegador simulado y copia el snippet HTML antes de desplegarlo:</p>
+<p>Previsualiza tu anuncio en un navegador simulado y copia el snippet HTML:</p>
 <p>👉 <a href="/preview" style="color:#f7931a">sats4ads.com/preview</a></p></section>
 
 <section id="cancelar"><h2>❌ Cancelar anuncio</h2>
 <pre><code>/cancelgroupad              # listar todos
-/cancelgroupad AD-XXXXXX    # cancelar uno específico</code></pre>
+/cancelgroupad AD-XXXXXX    # cancelar uno</code></pre>
 <table><tr><th>Situación</th><th>Reembolso</th></tr>
 <tr><td>Cancelar antes de desplegar</td><td>Presupuesto + comisión completa</td></tr>
 <tr><td>Cancelar después de desplegar</td><td>Saldo restante</td></tr>
@@ -156,96 +145,88 @@ Para viewers:     90 sats → 90 usuarios @ 1 sat/vista</code></pre>
 <tr><td><code>/cancelgroupad</code></td><td>Ver/cancelar anuncios activos</td></tr>
 <tr><td><code>/sats4ads on 2</code></td><td>Activar recepción @ 2 sats/vista</td></tr>
 <tr><td><code>/sats4ads off</code></td><td>Desactivar recepción</td></tr>
-<tr><td><code>/sats4ads preview</code></td><td>Preview broadcast (responder al mensaje)</td></tr></table></section>
+<tr><td><code>/sats4ads preview</code></td><td>Preview broadcast</td></tr></table></section>
 
 <section id="comisiones"><h2>💰 Comisiones</h2>
 <table><tr><th>Formato</th><th>Comisión</th><th>Distribución</th></tr>
 <tr><td>Broadcast DM</td><td>10%</td><td>100% → bot</td></tr>
 <tr><td>Grupo/Canal/Web</td><td>10%</td><td>50% bot · 50% propietario del grupo</td></tr></table>
 <pre><code>Anunciante:   -220 sats  (200 presupuesto + 20 comisión)
-10 claimers:  +200 sats  (20 cada uno)
-Bot:          +10 sats
-Propietario:  +10 sats
-────────────────────────
-Neto:           0 sats ✅</code></pre></section>
+10 claimers:  +200 sats
+Bot:          +10 sats · Propietario: +10 sats
+─────────── Neto: 0 sats ✅</code></pre></section>
 
 <section id="seguridad"><h2>🔒 Anti-fraude</h2>
-<ul><li><strong>1 claim por Telegram ID</strong> por anuncio — constraint UNIQUE en DB</li>
-<li><strong>Tokens HMAC firmados</strong> (web) — válidos 10 min, uso único</li>
-<li><strong>Telegram initData</strong> (Mini App) — identidad verificada criptográficamente</li>
-<li><strong>Rate limiting</strong> — máx 3 intentos por IP / 5 min</li>
-<li><strong>Ledger de doble entrada</strong> — balance del sistema siempre = 0</li></ul></section>
+<ul><li><strong>1 claim por Telegram ID</strong> por anuncio (UNIQUE en DB)</li>
+<li><strong>Tokens HMAC firmados</strong> — 10 min, uso único</li>
+<li><strong>Telegram initData</strong> — identidad verificada en Mini App</li>
+<li><strong>Rate limiting</strong> — máx 3 intentos/IP/5 min</li>
+<li><strong>Ledger doble entrada</strong> — balance siempre = 0</li></ul></section>
 </div><div class="lc " data-lang="en">
 <section id="que-es"><h2>What is sats4ads?</h2>
 <div class="intro">sats4ads is native Bitcoin Lightning advertising built into Telegram. Advertisers pay in sats, users earn sats — no middlemen, no custody.</div>
-<ul><li><strong>Viewers earn for every ad they see</strong> — you set your own minimum price</li><li><strong>Advertisers pay only for real impressions</strong> — unclaimed budget is automatically refunded</li><li><strong>No personal data</strong> — only your Telegram ID</li><li><strong>Instant payments</strong> — Lightning Network</li></ul></section>
+<ul><li><strong>Viewers earn for every ad they see</strong> — you set your minimum price</li><li><strong>Advertisers pay only for real impressions</strong> — unclaimed budget automatically refunded</li><li><strong>No personal data</strong> — only your Telegram ID</li><li><strong>Instant payments</strong> — Lightning Network</li></ul></section>
 
 <section id="comparativa"><h2>Format comparison</h2>
-<table><tr><th>Format</th><th>Where it appears</th><th>Claims</th><th>Best for</th></tr>
+<table><tr><th>Format</th><th>Where</th><th>Claims</th><th>Best for</th></tr>
 <tr><td><span class="badge bb">📢 Broadcast DM</span></td><td>Each user's DM</td><td>1 per user</td><td>Mass reach</td></tr>
-<tr><td><span class="badge bg">🏪 Group</span></td><td>Telegram group</td><td>1 per member</td><td>Specific communities</td></tr>
+<tr><td><span class="badge bg">🏪 Group</span></td><td>Telegram group</td><td>1 per member</td><td>Communities</td></tr>
 <tr><td><span class="badge bo">📣 Channel</span></td><td>Telegram channel</td><td>1 per subscriber</td><td>Large audiences</td></tr>
-<tr><td><span class="badge bp">🌐 Web</span></td><td>Any website</td><td>1 per Telegram ID</td><td>Blogs, shops, sites</td></tr></table></section>
+<tr><td><span class="badge bp">🌐 Web</span></td><td>Any website</td><td>1 per Telegram ID</td><td>Blogs, shops</td></tr></table></section>
 
 <section id="receptor"><h2>📥 Become a viewer — earn sats</h2>
-<div class="intro">As a viewer, advertisers pay you directly for seeing their ads. You set the minimum price you accept.</div>
-<h3>Activate</h3>
+<div class="intro">As a viewer, advertisers pay you directly for seeing their ads. You set the minimum price.</div>
 <div class="step"><div class="sn">1</div><div>Open the bot: <code>/sats4ads</code></div></div>
-<div class="step"><div class="sn">2</div><div>Press <strong>✅ Activate reception</strong> and choose your rate</div></div>
-<div class="step"><div class="sn">3</div><div>You are now on the marketplace</div></div>
+<div class="step"><div class="sn">2</div><div>Press <strong>✅ Activate reception</strong> and pick your rate</div></div>
+<div class="step"><div class="sn">3</div><div>You're now on the marketplace</div></div>
 <h3>Recommended rates</h3>
 <ul><li><code>0.1 sats/view</code> — maximum exposure</li><li><code>1 sat/view</code> — popular balance</li><li><code>5+ sats/view</code> — fewer ads, better paid</li></ul>
-<div class="bm">📢 <strong>Sponsored ad</strong><br><br><em>[ad content]</em><br><small>⚡ 2 sats · Valid 3 days</small><br><span class="bb2">✅ Claim 2 sats</span></div>
-<div class="warn">⏰ You have 3 days to claim. After that the payment expires and is returned to the advertiser.</div></section>
+<div class="bm">📢 <strong>Sponsored ad</strong><br><em>[content]</em><br><small>⚡ 2 sats · Valid 3 days</small><br><span class="bb2">✅ Claim 2 sats</span></div>
+<div class="wrn">⏰ You have 3 days to claim. After that the payment expires.</div></section>
 
 <section id="broadcast"><h2>📢 Broadcast DM</h2>
 <div class="intro">Send your ad to subscribed users' DMs, cheapest first, until the budget runs out.</div>
 <div class="step"><div class="sn">1</div><div>Send the content to the bot (text, photo, video, GIF...)</div></div>
-<div class="step"><div class="sn">2</div><div>Reply to that message with <code>/sats4ads preview</code></div></div>
-<div class="step"><div class="sn">3</div><div>Choose max price per view and total budget</div></div>
+<div class="step"><div class="sn">2</div><div>Reply with <code>/sats4ads preview</code></div></div>
+<div class="step"><div class="sn">3</div><div>Choose max price/view and total budget</div></div>
 <pre><code>Budget:          100 sats
 Fee (10%):       -10 sats
 For viewers:      90 sats → 90 users @ 1 sat/view</code></pre>
 <div class="tip">💡 Unclaimed balance after 3 days is automatically refunded.</div></section>
 
 <section id="groupad"><h2>🏪 Group ad</h2>
-<div class="intro">A sponsored faucet in a group: each member claims once. Set up everything in private, paste the code in the group.</div>
+<div class="intro">A sponsored faucet in a group: each member claims once.</div>
 <div class="step"><div class="sn">1</div><div><code>/groupad</code> in private — shortcut: <code>/groupad 100 10</code></div></div>
-<div class="step"><div class="sn">2</div><div>Set total budget and sats per claim</div></div>
-<div class="step"><div class="sn">3</div><div>Send the content and confirm</div></div>
-<div class="step"><div class="sn">4</div><div>Receive code <code>AD-XXXXXX</code> + iframe URL</div></div>
-<div class="step"><div class="sn">5</div><div>Paste code in the group → bot publishes the ad automatically</div></div>
-<pre><code>/groupad 200 20
-# 200 sats total · 20 sats/claim · 10 max claims · 20 sats fee</code></pre>
+<div class="step"><div class="sn">2</div><div>Set budget and sats/claim, send content</div></div>
+<div class="step"><div class="sn">3</div><div>Receive code <code>AD-XXXXXX</code></div></div>
+<div class="step"><div class="sn">4</div><div>Paste code in group → bot publishes the ad automatically</div></div>
+<pre><code>/groupad 200 20  → 200 sats total · 20/claim · 10 claims · 20 sats fee</code></pre>
 <div class="tip">💡 The group owner automatically receives 50% of the commission.</div></section>
 
 <section id="canal"><h2>📣 Channel ad</h2>
-<div class="intro">Same as a group ad, but in a Telegram channel. The bot must be a channel administrator.</div>
+<div class="intro">Same as a group ad, but in a Telegram channel. Bot must be a channel admin.</div>
 <div class="step"><div class="sn">1</div><div>Create the ad: <code>/groupad 500 50</code></div></div>
 <div class="step"><div class="sn">2</div><div>Get the code <code>AD-XXXXXX</code></div></div>
-<div class="step"><div class="sn">3</div><div>Post the code in the channel — the bot replaces it with the ad and a Mini App button</div></div>
-<div class="info">📣 In channels, the button opens the ad as a Mini App inside Telegram — no browser needed.</div></section>
+<div class="step"><div class="sn">3</div><div>Post code in channel → bot replaces it with ad and Mini App button</div></div>
+<div class="inf">📣 In channels, the button opens the ad as a Mini App inside Telegram — no browser needed.</div></section>
 
 <section id="web"><h2>🌐 Web iframe</h2>
-<div class="intro">Embed your ad as an interactive widget on any website. Visitors claim sats by opening Telegram.</div>
-<h3>HTML snippet</h3>
-<pre><code>&lt;iframe
-  src="https://sats4ads.com/ad/AD-XXXXXX"
-  width="100%" height="240"
-  frameborder="0" style="border-radius:12px"
-&gt;&lt;/iframe&gt;</code></pre>
-<div class="step"><div class="sn">1</div><div>Visitor sees the widget and clicks <strong>Claim X sats</strong></div></div>
-<div class="step"><div class="sn">2</div><div>A temporary link (valid 10 min) opens Telegram</div></div>
+<div class="intro">Embed your ad as a widget on any website. Visitors claim sats by opening Telegram.</div>
+<pre><code>&lt;iframe src="https://sats4ads.com/ad/AD-XXXXXX"
+  width="100%" height="240" frameborder="0"
+  style="border-radius:12px"&gt;&lt;/iframe&gt;</code></pre>
+<div class="step"><div class="sn">1</div><div>Visitor clicks <strong>Claim X sats</strong></div></div>
+<div class="step"><div class="sn">2</div><div>Temporary link (10 min) opens Telegram</div></div>
 <div class="step"><div class="sn">3</div><div>Bot verifies identity and credits sats instantly</div></div>
-<div class="tip">💡 The same ad works simultaneously in Telegram AND on the web. Budget is shared.</div></section>
+<div class="tip">💡 The same ad works in Telegram AND on the web. Budget is shared.</div></section>
 
 <section id="preview"><h2>🔍 Previewer</h2>
-<p>Preview your ad in a simulated browser and copy the HTML snippet before deploying:</p>
+<p>Preview your ad in a simulated browser and copy the HTML snippet:</p>
 <p>👉 <a href="/preview" style="color:#f7931a">sats4ads.com/preview</a></p></section>
 
 <section id="cancelar"><h2>❌ Cancel ad</h2>
-<pre><code>/cancelgroupad              # list all cancellable ads
-/cancelgroupad AD-XXXXXX    # cancel specific ad</code></pre>
+<pre><code>/cancelgroupad              # list all
+/cancelgroupad AD-XXXXXX    # cancel specific</code></pre>
 <table><tr><th>Situation</th><th>Refund</th></tr>
 <tr><td>Cancel before deploying</td><td>Budget + full fee</td></tr>
 <tr><td>Cancel after deploying</td><td>Remaining balance</td></tr>
@@ -259,146 +240,134 @@ For viewers:      90 sats → 90 users @ 1 sat/view</code></pre>
 <tr><td><code>/cancelgroupad</code></td><td>List/cancel active ads</td></tr>
 <tr><td><code>/sats4ads on 2</code></td><td>Activate reception @ 2 sats/view</td></tr>
 <tr><td><code>/sats4ads off</code></td><td>Deactivate reception</td></tr>
-<tr><td><code>/sats4ads preview</code></td><td>Broadcast preview (reply to message)</td></tr></table></section>
+<tr><td><code>/sats4ads preview</code></td><td>Broadcast preview</td></tr></table></section>
 
 <section id="comisiones"><h2>💰 Fees</h2>
 <table><tr><th>Format</th><th>Fee</th><th>Split</th></tr>
 <tr><td>Broadcast DM</td><td>10%</td><td>100% → bot</td></tr>
 <tr><td>Group/Channel/Web</td><td>10%</td><td>50% bot · 50% group owner</td></tr></table>
 <pre><code>Advertiser:   -220 sats  (200 budget + 20 fee)
-10 claimers:  +200 sats  (20 each)
-Bot:          +10 sats
-Group owner:  +10 sats
-────────────────────────
-Net total:      0 sats ✅</code></pre></section>
+10 claimers:  +200 sats
+Bot: +10 · Group owner: +10
+─────────── Net: 0 sats ✅</code></pre></section>
 
 <section id="seguridad"><h2>🔒 Anti-fraud</h2>
-<ul><li><strong>1 claim per Telegram ID</strong> per ad — UNIQUE constraint in DB</li>
-<li><strong>HMAC-signed tokens</strong> (web) — valid 10 min, single use</li>
-<li><strong>Telegram initData</strong> (Mini App) — cryptographically verified identity</li>
-<li><strong>Rate limiting</strong> — max 3 attempts per IP / 5 min</li>
-<li><strong>Double-entry ledger</strong> — system balance always = 0</li></ul></section>
+<ul><li><strong>1 claim per Telegram ID</strong> per ad (UNIQUE in DB)</li>
+<li><strong>HMAC-signed tokens</strong> — 10 min TTL, single use</li>
+<li><strong>Telegram initData</strong> — verified identity in Mini App</li>
+<li><strong>Rate limiting</strong> — max 3 attempts/IP/5 min</li>
+<li><strong>Double-entry ledger</strong> — balance always = 0</li></ul></section>
 </div><div class="lc " data-lang="de">
 <section id="que-es"><h2>Was ist sats4ads?</h2>
-<div class="intro">sats4ads ist natives Bitcoin-Lightning-Werbung direkt in Telegram. Werbetreibende zahlen in Sats, Nutzer verdienen Sats — ohne Mittelsmänner, ohne Verwahrung.</div>
-<ul><li><strong>Empfänger verdienen für jede gesehene Anzeige</strong> — du legst den Mindestpreis fest</li><li><strong>Werbetreibende zahlen nur für echte Impressionen</strong> — nicht beanspruchtes Budget wird automatisch erstattet</li><li><strong>Keine persönlichen Daten</strong> — nur deine Telegram-ID</li><li><strong>Sofortige Zahlungen</strong> — Lightning Network</li></ul></section>
+<div class="intro">sats4ads ist natives Bitcoin-Lightning-Werbung in Telegram. Werbetreibende zahlen in Sats, Nutzer verdienen Sats — ohne Mittelsmänner.</div>
+<ul><li><strong>Empfänger verdienen für jede Anzeige</strong> — du legst den Mindestpreis fest</li><li><strong>Nur echte Impressionen bezahlen</strong> — ungenutztes Budget wird erstattet</li><li><strong>Keine persönlichen Daten</strong> — nur Telegram-ID</li><li><strong>Sofortige Zahlungen</strong> — Lightning Network</li></ul></section>
 
 <section id="comparativa"><h2>Formatvergleich</h2>
-<table><tr><th>Format</th><th>Wo es erscheint</th><th>Claims</th><th>Ideal für</th></tr>
+<table><tr><th>Format</th><th>Wo</th><th>Claims</th><th>Ideal für</th></tr>
 <tr><td><span class="badge bb">📢 Broadcast DM</span></td><td>DM jedes Nutzers</td><td>1 pro Nutzer</td><td>Massenreichweite</td></tr>
-<tr><td><span class="badge bg">🏪 Gruppe</span></td><td>Telegram-Gruppe</td><td>1 pro Mitglied</td><td>Spezifische Communitys</td></tr>
+<tr><td><span class="badge bg">🏪 Gruppe</span></td><td>Telegram-Gruppe</td><td>1 pro Mitglied</td><td>Communitys</td></tr>
 <tr><td><span class="badge bo">📣 Kanal</span></td><td>Telegram-Kanal</td><td>1 pro Abonnent</td><td>Großes Publikum</td></tr>
-<tr><td><span class="badge bp">🌐 Web</span></td><td>Beliebige Website</td><td>1 pro Telegram-ID</td><td>Blogs, Shops, Seiten</td></tr></table></section>
+<tr><td><span class="badge bp">🌐 Web</span></td><td>Beliebige Website</td><td>1 pro Telegram-ID</td><td>Blogs, Shops</td></tr></table></section>
 
 <section id="receptor"><h2>📥 Empfänger werden — Sats verdienen</h2>
-<div class="intro">Als Empfänger zahlen dir Werbetreibende direkt dafür, dass du ihre Anzeigen siehst. Du legst den Mindestpreis fest.</div>
-<h3>Aktivieren</h3>
+<div class="intro">Als Empfänger zahlen dir Werbetreibende für das Ansehen ihrer Anzeigen. Du legst den Mindestpreis fest.</div>
 <div class="step"><div class="sn">1</div><div>Bot öffnen: <code>/sats4ads</code></div></div>
 <div class="step"><div class="sn">2</div><div><strong>✅ Empfang aktivieren</strong> drücken und Tarif wählen</div></div>
 <div class="step"><div class="sn">3</div><div>Du bist jetzt auf dem Marktplatz</div></div>
-<h3>Empfohlene Tarife</h3>
 <ul><li><code>0,1 Sats/Ansicht</code> — maximale Reichweite</li><li><code>1 Sat/Ansicht</code> — beliebte Balance</li><li><code>5+ Sats/Ansicht</code> — weniger Anzeigen, besser bezahlt</li></ul>
-<div class="bm">📢 <strong>Gesponserte Anzeige</strong><br><br><em>[Anzeigeninhalt]</em><br><small>⚡ 2 Sats · Gültig 3 Tage</small><br><span class="bb2">✅ 2 Sats beanspruchen</span></div>
-<div class="warn">⏰ Du hast 3 Tage zum Beanspruchen. Danach verfällt die Zahlung.</div></section>
+<div class="bm">📢 <strong>Gesponserte Anzeige</strong><br><em>[Inhalt]</em><br><small>⚡ 2 Sats · Gültig 3 Tage</small><br><span class="bb2">✅ 2 Sats beanspruchen</span></div>
+<div class="wrn">⏰ 3 Tage zum Beanspruchen. Danach verfällt die Zahlung.</div></section>
 
 <section id="broadcast"><h2>📢 Broadcast DM</h2>
-<div class="intro">Sende deine Anzeige an die DMs abonnierter Nutzer, vom günstigsten zum teuersten, bis das Budget aufgebraucht ist.</div>
-<div class="step"><div class="sn">1</div><div>Inhalt an den Bot senden (Text, Foto, Video, GIF...)</div></div>
-<div class="step"><div class="sn">2</div><div>Auf diese Nachricht antworten mit <code>/sats4ads preview</code></div></div>
-<div class="step"><div class="sn">3</div><div>Maximalen Preis/Ansicht und Gesamtbudget wählen</div></div>
+<div class="intro">Sende deine Anzeige an abonnierte Nutzer, vom günstigsten zum teuersten, bis das Budget aufgebraucht ist.</div>
+<div class="step"><div class="sn">1</div><div>Inhalt an Bot senden (Text, Foto, Video, GIF...)</div></div>
+<div class="step"><div class="sn">2</div><div>Mit <code>/sats4ads preview</code> antworten</div></div>
+<div class="step"><div class="sn">3</div><div>Max-Preis/Ansicht und Gesamtbudget wählen</div></div>
 <pre><code>Budget:          100 Sats
 Gebühr (10%):   -10 Sats
 Für Zuschauer:   90 Sats → 90 Nutzer @ 1 Sat/Ansicht</code></pre>
 <div class="tip">💡 Nicht beanspruchtes Guthaben nach 3 Tagen wird automatisch erstattet.</div></section>
 
 <section id="groupad"><h2>🏪 Gruppenanzeige</h2>
-<div class="intro">Ein gesponserter Faucet in einer Gruppe: jedes Mitglied beansprucht einmal. Alles wird privat eingerichtet, der Code in der Gruppe eingefügt.</div>
+<div class="intro">Gesponserter Faucet in einer Gruppe: jedes Mitglied beansprucht einmal.</div>
 <div class="step"><div class="sn">1</div><div><code>/groupad</code> privat — Kurzform: <code>/groupad 100 10</code></div></div>
-<div class="step"><div class="sn">2</div><div>Gesamtbudget und Sats/Claim festlegen</div></div>
-<div class="step"><div class="sn">3</div><div>Inhalt senden und bestätigen</div></div>
-<div class="step"><div class="sn">4</div><div>Code <code>AD-XXXXXX</code> + Iframe-URL erhalten</div></div>
-<div class="step"><div class="sn">5</div><div>Code in der Gruppe einfügen → Bot veröffentlicht die Anzeige automatisch</div></div>
-<pre><code>/groupad 200 20
-# 200 Sats gesamt · 20 Sats/Claim · max. 10 Claims · 20 Sats Gebühr</code></pre>
+<div class="step"><div class="sn">2</div><div>Budget und Sats/Claim festlegen, Inhalt senden</div></div>
+<div class="step"><div class="sn">3</div><div>Code <code>AD-XXXXXX</code> erhalten</div></div>
+<div class="step"><div class="sn">4</div><div>Code in Gruppe einfügen → Bot veröffentlicht Anzeige automatisch</div></div>
+<pre><code>/groupad 200 20  → 200 Sats gesamt · 20/Claim · 10 Claims · 20 Sats Gebühr</code></pre>
 <div class="tip">💡 Der Gruppenbesitzer erhält automatisch 50% der Provision.</div></section>
 
 <section id="canal"><h2>📣 Kanalanzeige</h2>
-<div class="intro">Funktioniert wie die Gruppenanzeige, aber in einem Telegram-Kanal. Der Bot muss Kanaladministrator sein.</div>
+<div class="intro">Wie Gruppenanzeige, aber in einem Telegram-Kanal. Bot muss Kanaladmin sein.</div>
 <div class="step"><div class="sn">1</div><div>Anzeige erstellen: <code>/groupad 500 50</code></div></div>
 <div class="step"><div class="sn">2</div><div>Code <code>AD-XXXXXX</code> erhalten</div></div>
-<div class="step"><div class="sn">3</div><div>Code im Kanal posten → Bot ersetzt ihn durch Anzeige mit Mini-App-Schaltfläche</div></div>
-<div class="info">📣 In Kanälen öffnet der Claim-Button die Anzeige als Mini-App innerhalb von Telegram — kein Browser nötig.</div></section>
+<div class="step"><div class="sn">3</div><div>Code im Kanal posten → Bot ersetzt ihn durch Anzeige mit Mini-App-Button</div></div>
+<div class="inf">📣 In Kanälen öffnet der Button die Anzeige als Mini-App in Telegram — kein Browser nötig.</div></section>
 
 <section id="web"><h2>🌐 Web-Iframe</h2>
-<div class="intro">Bette deine Anzeige als interaktives Widget auf jeder Website ein. Besucher beanspruchen Sats, indem sie Telegram öffnen.</div>
-<h3>HTML-Snippet</h3>
-<pre><code>&lt;iframe
-  src="https://sats4ads.com/ad/AD-XXXXXX"
-  width="100%" height="240"
-  frameborder="0" style="border-radius:12px"
-&gt;&lt;/iframe&gt;</code></pre>
-<div class="step"><div class="sn">1</div><div>Besucher sieht Widget und klickt <strong>X Sats beanspruchen</strong></div></div>
-<div class="step"><div class="sn">2</div><div>Temporärer Link (10 Min. gültig) öffnet Telegram</div></div>
+<div class="intro">Bette deine Anzeige als Widget auf jeder Website ein. Besucher beanspruchen Sats über Telegram.</div>
+<pre><code>&lt;iframe src="https://sats4ads.com/ad/AD-XXXXXX"
+  width="100%" height="240" frameborder="0"
+  style="border-radius:12px"&gt;&lt;/iframe&gt;</code></pre>
+<div class="step"><div class="sn">1</div><div>Besucher klickt <strong>X Sats beanspruchen</strong></div></div>
+<div class="step"><div class="sn">2</div><div>Temporärer Link (10 Min) öffnet Telegram</div></div>
 <div class="step"><div class="sn">3</div><div>Bot verifiziert Identität und schreibt Sats sofort gut</div></div>
-<div class="tip">💡 Dieselbe Anzeige funktioniert gleichzeitig in Telegram UND im Web. Das Budget wird geteilt.</div></section>
+<div class="tip">💡 Dieselbe Anzeige funktioniert in Telegram UND im Web. Budget geteilt.</div></section>
 
 <section id="preview"><h2>🔍 Vorschau</h2>
-<p>Anzeige vor der Veröffentlichung in einem simulierten Browser ansehen und HTML-Snippet kopieren:</p>
+<p>Anzeige in simuliertem Browser ansehen und HTML-Snippet kopieren:</p>
 <p>👉 <a href="/preview" style="color:#f7931a">sats4ads.com/preview</a></p></section>
 
 <section id="cancelar"><h2>❌ Anzeige abbrechen</h2>
-<pre><code>/cancelgroupad              # alle abbrechbaren Anzeigen auflisten
-/cancelgroupad AD-XXXXXX    # bestimmte Anzeige abbrechen</code></pre>
+<pre><code>/cancelgroupad              # alle auflisten
+/cancelgroupad AD-XXXXXX    # bestimmte abbrechen</code></pre>
 <table><tr><th>Situation</th><th>Erstattung</th></tr>
 <tr><td>Abbrechen vor Veröffentlichung</td><td>Budget + volle Gebühr</td></tr>
 <tr><td>Abbrechen nach Veröffentlichung</td><td>Verbleibendes Guthaben</td></tr>
-<tr><td>Ablauf (7 Tage)</td><td>Gleich wie Abbrechen</td></tr></table></section>
+<tr><td>Ablauf (7 Tage)</td><td>Wie Abbrechen</td></tr></table></section>
 
 <section id="comandos"><h2>📋 Befehle</h2>
 <table><tr><th>Befehl</th><th>Beschreibung</th></tr>
 <tr><td><code>/sats4ads</code></td><td>Hauptmenü</td></tr>
-<tr><td><code>/groupad</code></td><td>Anzeige erstellen (Assistent)</td></tr>
+<tr><td><code>/groupad</code></td><td>Anzeige erstellen</td></tr>
 <tr><td><code>/groupad 100 10</code></td><td>Kurzform: 100 Sats, 10/Claim</td></tr>
-<tr><td><code>/cancelgroupad</code></td><td>Aktive Anzeigen anzeigen/abbrechen</td></tr>
-<tr><td><code>/sats4ads on 2</code></td><td>Empfang aktivieren @ 2 Sats/Ansicht</td></tr>
+<tr><td><code>/cancelgroupad</code></td><td>Anzeigen anzeigen/abbrechen</td></tr>
+<tr><td><code>/sats4ads on 2</code></td><td>Empfang @ 2 Sats/Ansicht</td></tr>
 <tr><td><code>/sats4ads off</code></td><td>Empfang deaktivieren</td></tr>
-<tr><td><code>/sats4ads preview</code></td><td>Broadcast-Vorschau (auf Nachricht antworten)</td></tr></table></section>
+<tr><td><code>/sats4ads preview</code></td><td>Broadcast-Vorschau</td></tr></table></section>
 
 <section id="comisiones"><h2>💰 Gebühren</h2>
 <table><tr><th>Format</th><th>Gebühr</th><th>Aufteilung</th></tr>
 <tr><td>Broadcast DM</td><td>10%</td><td>100% → Bot</td></tr>
 <tr><td>Gruppe/Kanal/Web</td><td>10%</td><td>50% Bot · 50% Gruppenbesitzer</td></tr></table>
-<pre><code>Werbetreibender: -220 Sats  (200 Budget + 20 Gebühr)
-10 Claimer:      +200 Sats  (20 jeder)
-Bot:             +10 Sats
-Gruppenbesitzer: +10 Sats
-────────────────────────────
-Netto gesamt:      0 Sats ✅</code></pre></section>
+<pre><code>Werbetreibender: -220 Sats (200 Budget + 20 Gebühr)
+10 Claimer: +200 Sats
+Bot: +10 · Gruppenbesitzer: +10
+─────── Netto: 0 Sats ✅</code></pre></section>
 
 <section id="seguridad"><h2>🔒 Betrugsschutz</h2>
-<ul><li><strong>1 Claim pro Telegram-ID</strong> pro Anzeige — UNIQUE-Einschränkung in DB</li>
-<li><strong>HMAC-signierte Token</strong> (Web) — 10 Min. gültig, Einmalverwendung</li>
-<li><strong>Telegram initData</strong> (Mini-App) — kryptografisch verifizierte Identität</li>
-<li><strong>Rate-Limiting</strong> — max. 3 Versuche pro IP / 5 Min.</li>
-<li><strong>Doppelbuchhaltungs-Ledger</strong> — Systemsaldo immer = 0</li></ul></section>
-</div></main>
+<ul><li><strong>1 Claim pro Telegram-ID</strong> pro Anzeige (UNIQUE in DB)</li>
+<li><strong>HMAC-signierte Token</strong> — 10 Min, Einmalverwendung</li>
+<li><strong>Telegram initData</strong> — verifizierte Identität in Mini-App</li>
+<li><strong>Rate-Limiting</strong> — max 3 Versuche/IP/5 Min</li>
+<li><strong>Doppelbuchhaltungs-Ledger</strong> — Saldo immer = 0</li></ul></section>
 </div>
+</div>
+<footer style="text-align:center;padding:2rem;border-top:1px solid #1e1e1e;font-size:.8rem;color:#555;font-family:-apple-system,sans-serif">
+  <a href="/" style="color:#f7931a;text-decoration:none">sats4ads.com</a> ·
+  <a href="/preview" style="color:#f7931a;text-decoration:none">Preview</a> ·
+  <a href="https://github.com/claudio-neo/sats4ads" style="color:#f7931a;text-decoration:none">GitHub</a>
+</footer>
+
 <script>
-const tl={es:'Manual de usuario v1.0',en:'User manual v1.0',de:'Benutzerhandbuch v1.0'};
-function setLang(l){
-  document.querySelectorAll('.lc').forEach(e=>e.classList.toggle('on',e.dataset.lang===l));
-  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
-  document.getElementById('ntl').textContent=tl[l];
-  document.documentElement.lang=l;
-  localStorage.setItem('s4al',l);
+function SL(l){
+  document.querySelectorAll('[data-lang]').forEach(e=>e.style.display=e.dataset.lang===l?'':'none');
+  document.querySelectorAll('.nf').forEach(b=>{b.classList.toggle('nf-act',b.dataset.l===l)});
+  localStorage.setItem('s4al',l);document.documentElement.lang=l;
 }
-const saved=localStorage.getItem('s4al');
-const br=navigator.language.slice(0,2);
-const det=saved||(['es','en','de'].includes(br)?br:'en');
-if(det!=='es')setLang(det);
-const secs=document.querySelectorAll('section[id]');
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+x.target.id));});},{rootMargin:'-25% 0px -65% 0px'});
-secs.forEach(s=>obs.observe(s));
+(function(){
+  var s=localStorage.getItem('s4al'),br=navigator.language.slice(0,2);
+  SL(s||(['es','en','de'].includes(br)?br:'en'));
+})();
 </script>
-</body>
-</html>
+</body></html>
