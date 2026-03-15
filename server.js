@@ -64,25 +64,24 @@ function validateInitData(initData) {
 // ── BOT sync endpoints (protected by shared secret) ───────────────────────
 app.post('/api/ads', (req, res) => {
   if (req.headers['x-secret'] !== SHARED_SECRET) return res.status(401).json({ error: 'unauthorized' });
-  const { code, title, content_type, content_text, content_caption, per_claim_msat, max_claims, image_base64 } = req.body;
+  const { code, title, content_type, content_text, content_caption, per_claim_msat, max_claims, media_base64, media_ext } = req.body;
   if (!code || !content_type || !per_claim_msat) return res.status(400).json({ error: 'missing fields' });
 
-  // Save image if provided
-  let imageUrl = null;
-  if (image_base64) {
+  // Save media if provided
+  let mediaUrl = null;
+  if (media_base64 && media_ext) {
     try {
-      const buf = Buffer.from(image_base64, 'base64');
-      const ext = content_type === 'animation' ? 'gif' : 'jpg';
-      const imgPath = `${IMG_DIR}/${code}.${ext}`;
-      fs.writeFileSync(imgPath, buf);
-      imageUrl = `/img/${code}.${ext}`;
-    } catch (e) { console.error('[IMG] save failed:', e.message); }
+      const buf = Buffer.from(media_base64, 'base64');
+      const filename = `${code}.${media_ext}`;
+      fs.writeFileSync(`${IMG_DIR}/${filename}`, buf);
+      mediaUrl = `/img/${filename}`;
+    } catch (e) { console.error('[MEDIA] save failed:', e.message); }
   }
 
   db.prepare(`INSERT OR REPLACE INTO ads
     (code,title,content_type,content_text,content_caption,per_claim_msat,max_claims,image_url)
     VALUES (?,?,?,?,?,?,?,?)`)
-    .run(code, title||code, content_type, content_text||null, content_caption||null, per_claim_msat, max_claims, imageUrl);
+    .run(code, title||code, content_type, content_text||null, content_caption||null, per_claim_msat, max_claims, mediaUrl);
   res.json({ ok: true });
 });
 app.post('/api/ads/:code/claim', (req, res) => {
@@ -131,8 +130,25 @@ app.get('/ad/:code', (req, res) => {
   const content      = ad.content_caption || ad.content_text || '';
   const remaining    = ad.max_claims - ad.claims_made;
   const code         = req.params.code;
-  const hasImage     = ad.image_url ? true : false;
-  const imageHtml    = hasImage ? `<img src="${ad.image_url}" style="width:100%;border-radius:8px;margin-bottom:.75rem;max-height:300px;object-fit:cover" alt="">` : '';
+  // Build media HTML based on content type and file extension
+  let mediaHtml = '';
+  if (ad.image_url) {
+    const ext = ad.image_url.split('.').pop().toLowerCase();
+    const isVideo = ['mp4','webm','mov','avi'].includes(ext);
+    const isAudio = ['mp3','ogg','wav','m4a','opus'].includes(ext);
+    const isGif = ext === 'gif';
+
+    if (isVideo) {
+      mediaHtml = `<video src="${ad.image_url}" controls playsinline style="width:100%;border-radius:8px;margin-bottom:.75rem;max-height:300px;background:#000"></video>`;
+    } else if (isAudio) {
+      mediaHtml = `<audio src="${ad.image_url}" controls style="width:100%;margin-bottom:.75rem"></audio>`;
+    } else if (isGif) {
+      mediaHtml = `<img src="${ad.image_url}" style="width:100%;border-radius:8px;margin-bottom:.75rem;max-height:300px;object-fit:cover" alt="">`;
+    } else {
+      // photo / document with image extension
+      mediaHtml = `<img src="${ad.image_url}" style="width:100%;border-radius:8px;margin-bottom:.75rem;max-height:300px;object-fit:cover" alt="">`;
+    }
+  }
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(`<!DOCTYPE html>
@@ -156,7 +172,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </style></head><body>
 <div class="card">
   <div class="badge">⚡ Anuncio patrocinado</div>
-  ${imageHtml}
+  ${mediaHtml}
   <div class="content">${content}</div>
   <div class="reward">⚡ ${perClaimSats} sats</div>
   <div class="counter" id="counter">${exhausted ? '✅ Completado' : `${remaining} claims disponibles`}</div>
