@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>sats4ads — Bitcoin Lightning Advertising</title>
+<meta name="description" content="Native Bitcoin Lightning advertising in Telegram. Pay in sats, earn in sats.">
+<style>
+:root{--bg:#080808;--bg2:#0f0f0f;--bg3:#161616;--border:#1e1e1e;--orange:#f7931a;--orange2:#ffb347;--text:#d4d4d4;--muted:#555}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(247,147,26,.12),transparent 70%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.2);border-radius:20px;padding:.35rem .9rem;font-size:.78rem;color:var(--orange);margin-bottom:1.75rem}
+h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;line-height:1.15;color:#fff;margin-bottom:1.25rem;max-width:820px}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--orange),var(--orange2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--muted);max-width:540px;margin-bottom:2.5rem;line-height:1.65}
+.btns{display:flex;gap:.875rem;flex-wrap:wrap;justify-content:center}
+.bp{background:var(--orange);color:#000;padding:.8rem 1.75rem;border-radius:8px;font-weight:700;text-decoration:none;font-size:.95rem;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.bp:hover{opacity:.88;transform:translateY(-1px)}
+.bs{background:transparent;color:var(--text);padding:.8rem 1.75rem;border-radius:8px;font-weight:600;text-decoration:none;font-size:.95rem;border:1px solid var(--border);transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.bs:hover{border-color:var(--orange);color:var(--orange)}
+.stats{display:flex;gap:3rem;margin-top:4rem;flex-wrap:wrap;justify-content:center}
+.sv{font-size:1.6rem;font-weight:800;color:#fff;text-align:center}
+.sl{font-size:.75rem;color:var(--muted);margin-top:.2rem;text-align:center}
+sec{padding:5rem 2rem;display:block}
+.c{max-width:1100px;margin:0 auto}
+.ttl{font-size:.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--orange);margin-bottom:.75rem}
+.h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:#fff;margin-bottom:.75rem}
+.h2s{font-size:1rem;color:var(--muted);max-width:500px}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.5rem;margin-top:3rem}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.75rem;transition:border-color .2s}
+.sc:hover{border-color:rgba(247,147,26,.3)}
+.sn{font-size:2.5rem;font-weight:900;color:rgba(247,147,26,.15);line-height:1;margin-bottom:.75rem}
+.sc h3{font-size:1rem;color:#fff;margin-bottom:.5rem}
+.sc p,.fc p{font-size:.875rem;color:var(--muted);line-height:1.55}
+.fmtbg{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:1.25rem;margin-top:3rem}
+.fc{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all .2s}
+.fc:hover{border-color:var(--orange);transform:translateY(-2px)}
+.fi{font-size:2rem;margin-bottom:.875rem;display:block}
+.fc h3{font-size:1rem;color:#fff;margin-bottom:.5rem}
+.ft{display:inline-block;background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.18);color:var(--orange);font-size:.7rem;padding:.15rem .5rem;border-radius:4px;margin-top:.875rem;font-weight:600}
+.fwg{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.fwc{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem}
+.fwc h3{font-size:1.15rem;color:#fff;margin-bottom:1rem}
+.fwl{list-style:none}
+.fwl li{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.75rem;font-size:.88rem;color:var(--muted)}
+.fwl li::before{content:'⚡';flex-shrink:0;margin-top:.05rem}
+.fwl li strong{color:var(--text)}
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:1.25rem;margin-top:3rem}
+.pc{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.75rem;text-decoration:none;display:block;transition:all .2s}
+.pc:hover{border-color:var(--orange);transform:translateY(-2px)}
+.pi{font-size:1.75rem;margin-bottom:.875rem}
+.pc h3{font-size:1rem;color:#fff;margin-bottom:.4rem}
+.pc p{font-size:.84rem;color:var(--muted);line-height:1.5}
+.pl{display:inline-flex;align-items:center;gap:.3rem;color:var(--orange);font-size:.8rem;font-weight:600;margin-top:.875rem}
+.ctas{background:linear-gradient(135deg,rgba(247,147,26,.06),rgba(247,179,71,.03));border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:5rem 2rem}
+.ctas h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:#fff;margin-bottom:.875rem}
+.ctas p{color:var(--muted);margin-bottom:2rem;font-size:1rem}
+footer{padding:2rem;text-align:center;border-top:1px solid var(--border)}
+footer p{font-size:.8rem;color:var(--muted)}
+footer a{color:var(--orange);text-decoration:none}
+@media(max-width:680px){.fwg{grid-template-columns:1fr}.stats{gap:2rem}}
+@media(max-width:500px){.nav-links-wrap a:not(.bot-btn){display:none}}
+</style></head><body>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:200;padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1e1e1e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <a href="/" style="font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,#f7931a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;flex-shrink:0">⚡ sats4ads</a>
+  <div style="display:flex;gap:1.25rem;align-items:center">
+    <a href="/" id="nl-home" style="color:#555;text-decoration:none;font-size:.86rem;transition:color .15s" onmouseover="if(this.style.fontWeight!=='600')this.style.color='#f7931a'" onmouseout="if(this.style.fontWeight!=='600')this.style.color='#555'"><span data-lang="es" style="display:none">Inicio</span><span data-lang="en" style="display:none">Home</span><span data-lang="de" style="display:none">Start</span></a><a href="/manual" id="nl-manual" style="color:#555;text-decoration:none;font-size:.86rem;transition:color .15s" onmouseover="if(this.style.fontWeight!=='600')this.style.color='#f7931a'" onmouseout="if(this.style.fontWeight!=='600')this.style.color='#555'"><span data-lang="es" style="display:none">Manual</span><span data-lang="en" style="display:none">Manual</span><span data-lang="de" style="display:none">Handbuch</span></a><a href="/preview" id="nl-preview" style="color:#555;text-decoration:none;font-size:.86rem;transition:color .15s" onmouseover="if(this.style.fontWeight!=='600')this.style.color='#f7931a'" onmouseout="if(this.style.fontWeight!=='600')this.style.color='#555'"><span data-lang="es" style="display:none">Preview</span><span data-lang="en" style="display:none">Preview</span><span data-lang="de" style="display:none">Vorschau</span></a>
+    <span style="display:flex;gap:.1rem;align-items:center;margin:0 .5rem">
+<button class="s4a-lb" data-l="es" onclick="s4aSetLang('es')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.78rem;color:#444;transition:color .15s">🇪🇸</button>
+<button class="s4a-lb" data-l="en" onclick="s4aSetLang('en')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.78rem;color:#444;transition:color .15s">🇬🇧</button>
+<button class="s4a-lb" data-l="de" onclick="s4aSetLang('de')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.78rem;color:#444;transition:color .15s">🇩🇪</button>
+</span>
+    <a href="https://t.me/LightningEasyBot" style="background:#f7931a;color:#000;padding:.35rem .9rem;border-radius:6px;font-weight:600;text-decoration:none;font-size:.83rem;flex-shrink:0;white-space:nowrap">🤖 Bot</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="glow"></div>
+  <div class="badge">⚡ Bitcoin Lightning</div>
+  <h1><div data-lang="es"><em>Publicidad</em> que paga a quienes la ven.</div><div data-lang="en">Advertising that <em>pays viewers</em>, not platforms.</div><div data-lang="de">Werbung, die <em>Zuschauer bezahlt</em>, nicht Plattformen.</div></h1>
+  <p class="sub"><span data-lang="es">sats4ads conecta anunciantes y audiencias directamente en Telegram. Paga en sats, gana en sats. Sin KYC, sin cuentas, sin intermediarios.</span><span data-lang="en">sats4ads connects advertisers and audiences directly on Telegram. Pay in sats, earn in sats. No KYC, no accounts, no middlemen.</span><span data-lang="de">sats4ads verbindet Werbetreibende und Nutzer direkt auf Telegram. In Sats zahlen, Sats verdienen. Kein KYC, keine Konten.</span></p>
+  <div class="btns">
+    <a href="https://t.me/LightningEasyBot" class="bp">🤖 <span data-lang="es">Abrir el Bot</span><span data-lang="en">Open Bot</span><span data-lang="de">Bot öffnen</span></a>
+    <a href="/manual" class="bs">📖 <span data-lang="es">Leer el manual</span><span data-lang="en">Read the manual</span><span data-lang="de">Handbuch lesen</span></a>
+  </div>
+  <div class="stats">
+    <div><div class="sv">4</div><div class="sl"><span data-lang="es">Formatos</span><span data-lang="en">Formats</span><span data-lang="de">Formate</span></div></div>
+    <div><div class="sv">0%</div><div class="sl"><span data-lang="es">Datos recogidos</span><span data-lang="en">Data collected</span><span data-lang="de">Daten gesammelt</span></div></div>
+    <div><div class="sv">10%</div><div class="sl"><span data-lang="es">Solo comisión</span><span data-lang="en">Commission only</span><span data-lang="de">Nur Provision</span></div></div>
+    <div><div class="sv">⚡</div><div class="sl"><span data-lang="es">Instantáneo</span><span data-lang="en">Instant</span><span data-lang="de">Sofort</span></div></div>
+  </div>
+</div>
+
+<sec id="how"><div class="c">
+  <div class="ttl"><span data-lang="es">Proceso simple</span><span data-lang="en">Simple process</span><span data-lang="de">Einfacher Prozess</span></div>
+  <div class="h2"><span data-lang="es">Cómo funciona</span><span data-lang="en">How it works</span><span data-lang="de">Wie es funktioniert</span></div>
+  <p class="h2s"><span data-lang="es">Todo desde el bot de Telegram. Sin dashboard, sin registro.</span><span data-lang="en">Everything through the Telegram bot. No dashboard, no signup.</span><span data-lang="de">Alles über den Telegram-Bot. Kein Dashboard, keine Registrierung.</span></p>
+  <div class="sg">
+    <div class="sc"><div class="sn">01</div><h3><span data-lang="es">Crea tu anuncio</span><span data-lang="en">Create your ad</span><span data-lang="de">Anzeige erstellen</span></h3>
+    <p><span data-lang="es">Envía el contenido al bot en privado. Configura presupuesto y recompensa.</span><span data-lang="en">Send content to the bot in private. Set budget and reward per claim.</span><span data-lang="de">Inhalt privat an Bot senden. Budget und Prämie festlegen.</span></p></div>
+    <div class="sc"><div class="sn">02</div><h3><span data-lang="es">Obtén tu código</span><span data-lang="en">Get your code</span><span data-lang="de">Code erhalten</span></h3>
+    <p><span data-lang="es">Recibes el código AD-XXXXXX y una URL de iframe lista para usar.</span><span data-lang="en">Get a unique AD-XXXXXX code and an iframe URL ready to embed.</span><span data-lang="de">AD-XXXXXX-Code und fertige Iframe-URL erhalten.</span></p></div>
+    <div class="sc"><div class="sn">03</div><h3><span data-lang="es">Despliega donde quieras</span><span data-lang="en">Deploy anywhere</span><span data-lang="de">Überall deployen</span></h3>
+    <p><span data-lang="es">Pega el código en un grupo/canal de Telegram o en tu web.</span><span data-lang="en">Paste the code in a Telegram group, channel, or on any website.</span><span data-lang="de">Code in Telegram-Gruppe/Kanal oder Website einfügen.</span></p></div>
+    <div class="sc"><div class="sn">04</div><h3><span data-lang="es">Los viewers cobran</span><span data-lang="en">Viewers get paid</span><span data-lang="de">Zuschauer bezahlt</span></h3>
+    <p><span data-lang="es">Cada persona reclama una vez. Pago Lightning instantáneo. Saldo no gastado → reembolso.</span><span data-lang="en">Each person claims once. Instant Lightning payment. Unused budget refunded.</span><span data-lang="de">Jeder beansprucht einmal. Sofort-Lightning. Ungenutztes Budget erstattet.</span></p></div>
+  </div>
+</div></sec>
+
+<sec id="formats" class="fmtbg"><div class="c">
+  <div class="ttl"><span data-lang="es">Llega a tu audiencia</span><span data-lang="en">Reach your audience</span><span data-lang="de">Dein Publikum erreichen</span></div>
+  <div class="h2"><span data-lang="es">Cuatro formatos</span><span data-lang="en">Four formats</span><span data-lang="de">Vier Formate</span></div>
+  <p class="h2s"><span data-lang="es">Todos comparten el mismo presupuesto. Despliega en varios canales.</span><span data-lang="en">All formats share the same budget. Deploy on multiple channels.</span><span data-lang="de">Alle Formate teilen das Budget. Auf mehreren Kanälen deployen.</span></p>
+  <div class="fg">
+    <div class="fc"><span class="fi">📢</span><h3>Broadcast DM</h3>
+    <p><span data-lang="es">Llega al inbox de cada usuario suscrito, ordenado por tarifa.</span><span data-lang="en">Reaches each subscribed user's inbox, sorted by rate — cheapest first.</span><span data-lang="de">Geht in den Posteingang jedes abonnierten Nutzers, nach Tarif sortiert.</span></p>
+    <div class="ft"><span data-lang="es">Alcance masivo</span><span data-lang="en">Mass reach</span><span data-lang="de">Massenreichweite</span></div></div>
+    <div class="fc"><span class="fi">🏪</span><h3><span data-lang="es">Faucet de grupo</span><span data-lang="en">Group faucet</span><span data-lang="de">Gruppen-Faucet</span></h3>
+    <p><span data-lang="es">Cada miembro del grupo reclama una vez. El propietario gana el 50% de la comisión.</span><span data-lang="en">Each group member claims once. Group owner earns 50% of the commission.</span><span data-lang="de">Jedes Mitglied beansprucht einmal. Gruppenbesitzer verdient 50% der Provision.</span></p>
+    <div class="ft"><span data-lang="es">Comunidades</span><span data-lang="en">Community</span><span data-lang="de">Community</span></div></div>
+    <div class="fc"><span class="fi">📣</span><h3><span data-lang="es">Anuncio en canal</span><span data-lang="en">Channel ad</span><span data-lang="de">Kanalanzeige</span></h3>
+    <p><span data-lang="es">Los suscriptores reclaman via Mini App nativa de Telegram. Sin navegador.</span><span data-lang="en">Subscribers claim via native Telegram Mini App. No browser required.</span><span data-lang="de">Abonnenten beanspruchen via nativer Telegram Mini-App. Kein Browser.</span></p>
+    <div class="ft"><span data-lang="es">Audiencias grandes</span><span data-lang="en">Large audiences</span><span data-lang="de">Großes Publikum</span></div></div>
+    <div class="fc"><span class="fi">🌐</span><h3><span data-lang="es">Iframe web</span><span data-lang="en">Web iframe</span><span data-lang="de">Web-Iframe</span></h3>
+    <p><span data-lang="es">Una línea de HTML en cualquier web. Los visitantes reclaman sats vía Telegram.</span><span data-lang="en">One line of HTML on any website. Visitors claim sats via Telegram.</span><span data-lang="de">Eine HTML-Zeile auf jeder Website. Besucher beanspruchen Sats via Telegram.</span></p>
+    <div class="ft"><span data-lang="es">Cualquier web</span><span data-lang="en">Any website</span><span data-lang="de">Beliebige Website</span></div></div>
+  </div>
+</div></sec>
+
+<sec><div class="c">
+  <div class="ttl"><span data-lang="es">Dos lados</span><span data-lang="en">Two sides</span><span data-lang="de">Zwei Seiten</span></div>
+  <div class="h2"><span data-lang="es">Para anunciantes y viewers</span><span data-lang="en">For advertisers & viewers</span><span data-lang="de">Für Werbetreibende & Zuschauer</span></div>
+  <div class="fwg">
+    <div class="fwc"><h3>📤 <span data-lang="es">Para anunciantes</span><span data-lang="en">For advertisers</span><span data-lang="de">Für Werbetreibende</span></h3>
+    <ul class="fwl">
+      <li><span data-lang="es"><strong>Paga solo por claims reales</strong></span><span data-lang="en"><strong>Pay only for real claims</strong></span><span data-lang="de"><strong>Zahle nur für echte Claims</strong></span></li>
+      <li><span data-lang="es"><strong>Reembolso automático</strong> del saldo no gastado</span><span data-lang="en"><strong>Automatic refund</strong> of unclaimed budget</span><span data-lang="de"><strong>Automatische Erstattung</strong> ungenutzten Budgets</span></li>
+      <li><span data-lang="es"><strong>4 formatos</strong> — DM, grupo, canal, web</span><span data-lang="en"><strong>4 formats</strong> — DM, group, channel, web</span><span data-lang="de"><strong>4 Formate</strong> — DM, Gruppe, Kanal, Web</span></li>
+      <li><span data-lang="es"><strong>Sin registro</strong> — solo Telegram y sats</span><span data-lang="en"><strong>No sign-up</strong> — just Telegram and sats</span><span data-lang="de"><strong>Keine Registrierung</strong> — nur Telegram und Sats</span></li>
+      <li><span data-lang="es"><strong>50% comisión al propietario del grupo</strong></span><span data-lang="en"><strong>50% commission to group owner</strong></span><span data-lang="de"><strong>50% Provision an Gruppenbesitzer</strong></span></li>
+    </ul></div>
+    <div class="fwc"><h3>📥 <span data-lang="es">Para viewers</span><span data-lang="en">For viewers</span><span data-lang="de">Für Zuschauer</span></h3>
+    <ul class="fwl">
+      <li><span data-lang="es"><strong>Fija tu tarifa mínima</strong> por vista</span><span data-lang="en"><strong>Set your minimum rate</strong> per view</span><span data-lang="de"><strong>Mindestpreis festlegen</strong> pro Ansicht</span></li>
+      <li><span data-lang="es"><strong>Pago Lightning instantáneo</strong> al reclamar</span><span data-lang="en"><strong>Instant Lightning payment</strong> upon claiming</span><span data-lang="de"><strong>Sofortige Lightning-Zahlung</strong> beim Beanspruchen</span></li>
+      <li><span data-lang="es"><strong>3 días para reclamar</strong> cada anuncio</span><span data-lang="en"><strong>3 days to claim</strong> each ad</span><span data-lang="de"><strong>3 Tage zum Beanspruchen</strong> jeder Anzeige</span></li>
+      <li><span data-lang="es"><strong>Sin datos personales</strong> — solo tu Telegram ID</span><span data-lang="en"><strong>No personal data</strong> — only your Telegram ID</span><span data-lang="de"><strong>Keine persönlichen Daten</strong> — nur Telegram-ID</span></li>
+      <li><span data-lang="es"><strong>Propietarios de grupo ganan pasivamente</strong></span><span data-lang="en"><strong>Group owners earn passively</strong></span><span data-lang="de"><strong>Gruppenbesitzer verdienen passiv</strong></span></li>
+    </ul></div>
+  </div>
+</div></sec>
+
+<sec style="padding-top:1rem"><div class="c">
+  <div class="ttl"><span data-lang="es">Recursos</span><span data-lang="en">Resources</span><span data-lang="de">Ressourcen</span></div>
+  <div class="h2"><span data-lang="es">Explora</span><span data-lang="en">Explore</span><span data-lang="de">Entdecken</span></div>
+  <div class="pg">
+    <a href="/manual" class="pc"><div class="pi">📖</div>
+    <h3><span data-lang="es">Manual completo</span><span data-lang="en">Complete Manual</span><span data-lang="de">Vollständiges Handbuch</span></h3>
+    <p><span data-lang="es">Docs para todos los formatos, comandos y comisiones. ES / EN / DE.</span><span data-lang="en">Docs for all formats, commands and fees. ES / EN / DE.</span><span data-lang="de">Docs für alle Formate, Befehle und Gebühren. ES / EN / DE.</span></p>
+    <div class="pl"><span data-lang="es">Leer →</span><span data-lang="en">Read →</span><span data-lang="de">Lesen →</span></div></a>
+    <a href="/preview" class="pc"><div class="pi">🔍</div>
+    <h3><span data-lang="es">Previsualizador</span><span data-lang="en">Ad Previewer</span><span data-lang="de">Anzeigenvorschau</span></h3>
+    <p><span data-lang="es">Ve cómo quedará tu anuncio incrustado antes de desplegarlo.</span><span data-lang="en">See how your ad looks embedded before deploying it.</span><span data-lang="de">Sieh, wie deine Anzeige eingebettet aussieht, bevor du sie deployst.</span></p>
+    <div class="pl"><span data-lang="es">Abrir →</span><span data-lang="en">Open →</span><span data-lang="de">Öffnen →</span></div></a>
+    <a href="https://t.me/LightningEasyBot" class="pc"><div class="pi">🤖</div>
+    <h3><span data-lang="es">Bot de Telegram</span><span data-lang="en">Telegram Bot</span><span data-lang="de">Telegram-Bot</span></h3>
+    <p><span data-lang="es">Crea anuncios, gana sats y gestiona tu balance, todo en Telegram.</span><span data-lang="en">Create ads, earn sats and manage your balance, all in Telegram.</span><span data-lang="de">Anzeigen erstellen, Sats verdienen und Balance verwalten, alles in Telegram.</span></p>
+    <div class="pl">@LightningEasyBot →</div></a>
+  </div>
+</div></sec>
+
+<div class="ctas">
+  <h2><span data-lang="es">¿Listo para empezar?</span><span data-lang="en">Ready to start?</span><span data-lang="de">Bereit loszulegen?</span></h2>
+  <p><span data-lang="es">Abre el bot y escribe <code style="color:#f7931a;background:#111;padding:2px 8px;border-radius:5px">/sats4ads</code></span><span data-lang="en">Open the bot and type <code style="color:#f7931a;background:#111;padding:2px 8px;border-radius:5px">/sats4ads</code></span><span data-lang="de">Öffne den Bot und tippe <code style="color:#f7931a;background:#111;padding:2px 8px;border-radius:5px">/sats4ads</code></span></p>
+  <a href="https://t.me/LightningEasyBot" class="bp">⚡ <span data-lang="es">Abrir Bot</span><span data-lang="en">Open Bot</span><span data-lang="de">Bot öffnen</span></a>
+</div>
+<footer><p>⚡ sats4ads · <a href="/manual">Manual</a> · <a href="/preview">Preview</a> · <a href="https://t.me/LightningEasyBot">@LightningEasyBot</a> · <a href="https://github.com/claudio-neo/sats4ads">GitHub</a></p></footer>
+<script>
+const S4A_LANGS=['es','en','de'];
+function s4aSetLang(l){
+  document.querySelectorAll('[data-lang]').forEach(e=>e.style.display=e.dataset.lang===l?'':'none');
+  document.querySelectorAll('.s4a-lb').forEach(b=>{
+    var on=b.dataset.l===l;
+    b.style.color=on?'#f7931a':'#444';
+    b.style.fontWeight=on?'700':'400';
+  });
+  localStorage.setItem('s4al',l);document.documentElement.lang=l;
+}
+(function(){
+  var s=localStorage.getItem('s4al'),br=navigator.language.slice(0,2);
+  s4aSetLang(s||(S4A_LANGS.includes(br)?br:'en'));
+  // nav active
+  var p=location.pathname;
+  var map={'/':'nl-home','/manual':'nl-manual','/preview':'nl-preview'};
+  var id=map[p]||map[p.replace(/\/$/,'')];
+  if(id){var el=document.getElementById(id);if(el){el.style.color='#f7931a';el.style.fontWeight='600';}}
+})();
+</script>
+</body></html>

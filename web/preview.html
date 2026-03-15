@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sats4ads — Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#e0e0e0;min-height:100vh;padding:5.5rem 1rem 3rem}
+.wrap{max-width:920px;margin:0 auto}
+.page-title{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:.35rem}
+.page-sub{font-size:.9rem;color:#555;margin-bottom:2rem}
+.sbox{display:flex;gap:.5rem;max-width:520px;margin-bottom:.5rem}
+.sbox input{flex:1;padding:.75rem 1rem;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:1rem;font-family:monospace;text-transform:uppercase;letter-spacing:1px;outline:none}
+.sbox input:focus{border-color:#f7931a}
+.sbox input::placeholder{text-transform:none;letter-spacing:0;color:#444}
+.sbox button{padding:.75rem 1.5rem;background:#f7931a;color:#000;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-size:.95rem;transition:opacity .2s;white-space:nowrap}
+.sbox button:hover{opacity:.85}
+#err{font-size:.87rem;color:#e74c3c;display:none;margin-bottom:.75rem}
+#pa{display:none;margin-top:2rem}
+.bc{background:#161616;border:1px solid #222;border-radius:12px 12px 0 0;padding:.65rem 1rem;display:flex;align-items:center;gap:.65rem}
+.dots{display:flex;gap:5px}
+.dot{width:11px;height:11px;border-radius:50%}
+.fu{flex:1;background:#0f0f0f;border-radius:5px;padding:.3rem .7rem;font-size:.78rem;color:#555;font-family:monospace}
+.fs{background:#f5f5f5;border:1px solid #222;border-top:none;border-radius:0 0 12px 12px;padding:1.5rem}
+.fl{height:9px;background:#ddd;border-radius:4px;margin-bottom:5px}
+.as{margin:1.25rem 0;border:1px dashed #ccc;border-radius:8px;overflow:hidden;position:relative}
+.al{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.55);color:#fff;font-size:.62rem;padding:2px 6px;border-radius:3px;z-index:10}
+.as iframe{width:100%;height:230px;border:none;display:block}
+#sb{background:#111;border:1px solid #222;border-radius:12px;padding:1.25rem;margin-top:1.5rem;display:none}
+.sc{background:#0d1117;border-radius:7px;padding:.875rem 1rem;font-family:monospace;font-size:.8rem;color:#4caf50;cursor:pointer;transition:background .2s;line-height:1.55;word-break:break-all}
+.sc:hover{background:#0a1510}
+.ch{font-size:.7rem;color:#444;margin-top:.4rem}
+</style></head><body>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:200;padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1e1e1e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <a href="/" style="font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,#f7931a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;flex-shrink:0">⚡ sats4ads</a>
+  <div style="display:flex;gap:1.25rem;align-items:center">
+    <a href="/" id="nl-home" style="color:#555;text-decoration:none;font-size:.86rem;transition:color .15s" onmouseover="if(this.style.fontWeight!=='600')this.style.color='#f7931a'" onmouseout="if(this.style.fontWeight!=='600')this.style.color='#555'"><span data-lang="es" style="display:none">Inicio</span><span data-lang="en" style="display:none">Home</span><span data-lang="de" style="display:none">Start</span></a><a href="/manual" id="nl-manual" style="color:#555;text-decoration:none;font-size:.86rem;transition:color .15s" onmouseover="if(this.style.fontWeight!=='600')this.style.color='#f7931a'" onmouseout="if(this.style.fontWeight!=='600')this.style.color='#555'"><span data-lang="es" style="display:none">Manual</span><span data-lang="en" style="display:none">Manual</span><span data-lang="de" style="display:none">Handbuch</span></a><a href="/preview" id="nl-preview" style="color:#555;text-decoration:none;font-size:.86rem;transition:color .15s" onmouseover="if(this.style.fontWeight!=='600')this.style.color='#f7931a'" onmouseout="if(this.style.fontWeight!=='600')this.style.color='#555'"><span data-lang="es" style="display:none">Preview</span><span data-lang="en" style="display:none">Preview</span><span data-lang="de" style="display:none">Vorschau</span></a>
+    <span style="display:flex;gap:.1rem;align-items:center;margin:0 .5rem">
+<button class="s4a-lb" data-l="es" onclick="s4aSetLang('es')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.78rem;color:#444;transition:color .15s">🇪🇸</button>
+<button class="s4a-lb" data-l="en" onclick="s4aSetLang('en')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.78rem;color:#444;transition:color .15s">🇬🇧</button>
+<button class="s4a-lb" data-l="de" onclick="s4aSetLang('de')" style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;font-size:.78rem;color:#444;transition:color .15s">🇩🇪</button>
+</span>
+    <a href="https://t.me/LightningEasyBot" style="background:#f7931a;color:#000;padding:.35rem .9rem;border-radius:6px;font-weight:600;text-decoration:none;font-size:.83rem;flex-shrink:0;white-space:nowrap">🤖 Bot</a>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="page-title"><span data-lang="es">🔍 Previsualizador</span><span data-lang="en">🔍 Ad Previewer</span><span data-lang="de">🔍 Anzeigenvorschau</span></div>
+  <p class="page-sub"><span data-lang="es">Introduce el código de tu anuncio para ver cómo quedará en una web.</span><span data-lang="en">Enter your ad code to see how it will look embedded on a website.</span><span data-lang="de">Gib deinen Anzeigencode ein, um die Vorschau auf einer Website zu sehen.</span></p>
+  <div class="sbox">
+    <input type="text" id="ci" placeholder="AD-XXXXXX" maxlength="9">
+    <button onclick="preview()"><span data-lang="es">Previsualizar</span><span data-lang="en">Preview</span><span data-lang="de">Vorschau</span></button>
+  </div>
+  <div id="err"></div>
+  <div id="pa">
+    <div class="bc">
+      <div class="dots"><div class="dot" style="background:#ff5f56"></div><div class="dot" style="background:#ffbd2e"></div><div class="dot" style="background:#27c93f"></div></div>
+      <div class="fu" id="fu">https://example.com</div>
+    </div>
+    <div class="fs">
+      <div style="font-size:.9rem;font-weight:600;color:#111;margin-bottom:.5rem"><span data-lang="es">Artículo de ejemplo</span><span data-lang="en">Sample article</span><span data-lang="de">Beispielartikel</span></div>
+      <div class="fl" style="width:85%"></div><div class="fl" style="width:65%"></div>
+      <p style="font-size:.75rem;color:#999;margin:.75rem 0"><span data-lang="es">▲ Tu anuncio entre el contenido</span><span data-lang="en">▲ Your ad between website content</span><span data-lang="de">▲ Deine Anzeige im Website-Inhalt</span></p>
+      <div class="as">
+        <div class="al"><span data-lang="es">📢 Publicidad</span><span data-lang="en">📢 Advertisement</span><span data-lang="de">📢 Werbung</span></div>
+        <iframe id="ai" src="" title="sats4ads"></iframe>
+      </div>
+      <div class="fl" style="width:90%"></div><div class="fl" style="width:70%"></div>
+    </div>
+  </div>
+  <div id="sb">
+    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:#444;margin-bottom:.65rem"><span data-lang="es">📋 Código para incrustar</span><span data-lang="en">📋 Embed code</span><span data-lang="de">📋 Einbettungscode</span></div>
+    <div class="sc" id="sc" onclick="copySnippet()"></div>
+    <div class="ch"><span data-lang="es">Pulsa el código para copiarlo</span><span data-lang="en">Click the code to copy</span><span data-lang="de">Zum Kopieren klicken</span></div>
+  </div>
+</div>
+<script>
+
+const S4A_LANGS=['es','en','de'];
+function s4aSetLang(l){
+  document.querySelectorAll('[data-lang]').forEach(e=>e.style.display=e.dataset.lang===l?'':'none');
+  document.querySelectorAll('.s4a-lb').forEach(b=>{
+    var on=b.dataset.l===l;
+    b.style.color=on?'#f7931a':'#444';
+    b.style.fontWeight=on?'700':'400';
+  });
+  localStorage.setItem('s4al',l);document.documentElement.lang=l;
+}
+(function(){
+  var s=localStorage.getItem('s4al'),br=navigator.language.slice(0,2);
+  s4aSetLang(s||(S4A_LANGS.includes(br)?br:'en'));
+  // nav active
+  var p=location.pathname;
+  var map={'/':'nl-home','/manual':'nl-manual','/preview':'nl-preview'};
+  var id=map[p]||map[p.replace(/\/$/,'')];
+  if(id){var el=document.getElementById(id);if(el){el.style.color='#f7931a';el.style.fontWeight='600';}}
+})();
+
+function preview(){
+  var code=document.getElementById('ci').value.trim().toUpperCase();
+  var err=document.getElementById('err');
+  var l=localStorage.getItem('s4al')||'en';
+  var msgs={es:'❌ Formato inválido (debe ser AD-XXXXXX)',en:'❌ Invalid format (must be AD-XXXXXX)',de:'❌ Ungültiges Format (AD-XXXXXX)'};
+  if(!code.match(/^AD-[A-Z0-9]{6}$/)){err.textContent=msgs[l];err.style.display='block';return;}
+  err.style.display='none';
+  document.getElementById('ai').src='/ad/'+code;
+  document.getElementById('fu').textContent='https://example.com/?ad='+code;
+  document.getElementById('pa').style.display='block';
+  var s='<iframe src="https://sats4ads.com/ad/'+code+'" width="100%" height="240" frameborder="0" style="border-radius:12px"></iframe>';
+  document.getElementById('sc').textContent=s;
+  document.getElementById('sb').style.display='block';
+  document.getElementById('pa').scrollIntoView({behavior:'smooth'});
+}
+function copySnippet(){
+  var el=document.getElementById('sc');
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    var o=el.textContent,oc=el.style.color;
+    el.textContent='✅ Copied!';el.style.color='#f7931a';
+    setTimeout(function(){el.textContent=o;el.style.color=oc;},1500);
+  });
+}
+document.getElementById('ci').addEventListener('keydown',function(e){if(e.key==='Enter')preview();});
+</script></body></html>
