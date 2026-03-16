@@ -388,6 +388,23 @@ function SL(l){
     });
   },{rootMargin:'-25% 0px -65% 0px'});
   secs.forEach(function(s){obs.observe(s);});
+  // Sidebar click → scroll to visible section (fixes duplicate IDs across languages)
+  document.querySelectorAll('.si-link').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = this.getAttribute('href').slice(1);
+      var targets = document.querySelectorAll('section[id="'+id+'"]');
+      for(var i=0;i<targets.length;i++){
+        if(targets[i].offsetParent !== null){
+          targets[i].scrollIntoView({behavior:'smooth',block:'start'});
+          // highlight
+          document.querySelectorAll('.si-link').forEach(function(l){l.classList.remove('si-act');});
+          this.classList.add('si-act');
+          break;
+        }
+      }
+    });
+  });
 })();
 </script>
 </body></html>
